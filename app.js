@@ -2,6 +2,7 @@
 var express = require('express');
 var logger = require('morgan')
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 
 // Connection to Database
 
@@ -17,11 +18,16 @@ mongoose.connect('mongodb://localhost/blog', {
 var app = express();
 app.use(logger('dev'));
 app.use(express.json());
+app.use(bodyParser({
+    extended: false
+}))
+app.use(bodyParser.json());
 
 // Routing middleware
 
 app.use('/', require('./routes/index'));
-app.use('/articles', require('./routes/articles'))
+app.use('/articles', require('./routes/articles'));
+app.use('/users', require('./routes/users'));
 
 // Error Handler
 

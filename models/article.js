@@ -4,9 +4,10 @@ var Schema = mongoose.Schema;
 var articleSchema = new Schema({
     title: String,
     description: String,
-    author: String,
+    author: mongoose.Schema.Types.ObjectId,
     tags: [String],
-    likes: Number
+    likes: Number,
+    comment: mongoose.Schema.Types.ObjectId
 }, {
     timestamps: true
 });
