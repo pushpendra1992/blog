@@ -2,7 +2,7 @@
 var express = require('express');
 var logger = require('morgan')
 var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
+var path = require("path");
 
 // Connection to Database
 
@@ -18,10 +18,15 @@ mongoose.connect('mongodb://localhost/blog', {
 var app = express();
 app.use(logger('dev'));
 app.use(express.json());
-app.use(bodyParser({
+app.use(express.urlencoded({
     extended: false
 }))
-app.use(bodyParser.json());
+
+// Templating Engine
+
+// app.set("views", path.join(__dirname, "views"))
+app.set('view engine', 'ejs')
+
 
 // Routing middleware
 

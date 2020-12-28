@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width>, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -13,10 +13,14 @@
 <body>
     <br>
     <div class="container-fluid">
-        <a class="btn btn-success" href="/articles/new">Add Article</a>
-        &nbsp;&nbsp;&nbsp;
-        <a class="btn btn-success" href="/articles">Read Articles</a>
+        <a class="btn btn-success" href="/">home</a>
 
+        <% articles.forEach(article=>{ %>
+        <div><a href="/articles/<%=article.id%>">
+                <h3><%= article.title %></h3>
+            </a>
+        </div>
+        <% }) %>
     </div>
 </body>
 

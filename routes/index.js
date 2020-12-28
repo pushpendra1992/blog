@@ -5,7 +5,7 @@ var router = express.Router();
 
 router.get('/', (req, res) => {
     console.log("welcome to app");
-    res.send("Welcome to blog");
+    res.render("index");
 })
 
 //Export

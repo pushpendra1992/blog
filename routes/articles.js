@@ -2,10 +2,16 @@ var express = require('express');
 var router = express.Router();
 var Article = require('../models/article')
 var Comment = require('../models/comment');
+const article = require('../models/article');
 
 // Routes
 
 // Render article form
+
+router.get('/new', (req, res) => {
+    console.log("Add Article");
+    res.render("addArticle");
+})
 
 // Create article
 
@@ -13,9 +19,7 @@ router.post('/', (req, res, next) => {
     Article.create(req.body, (err, createdArticle) => {
         if (err)
             return next(err);
-        res.json({
-            article: createdArticle
-        });
+        res.redirect('/articles')
     })
 })
 
@@ -24,8 +28,8 @@ router.get('/', (req, res, next) => {
     Article.find({}, (err, articles) => {
         if (err)
             return next(err);
-        res.json({
-            "articles": articles
+        res.render('showArticles', {
+            articles
         });
     })
 })
@@ -37,36 +41,65 @@ router.get('/:id', (req, res, next) => {
     Article.findById(id, (err, article) => {
         if (err)
             return next(err)
-        res.json({
-            "article": article
+        else {
+            res.render("showOneArticle", {
+                article
+            });
+        }
+    })
+})
+
+// Render Edit Form
+
+router.get('/:id/edit', (req, res, next) => {
+    var id = req.params.id;
+    Article.findById(id, (err, article) => {
+        if (err)
+            return next(err)
+        res.render('editArticle', {
+            article
         });
     })
 })
 
 // Edit article
 
-router.put('/:id', (req, res, next) => {
+router.post('/:id', (req, res, next) => {
     var id = req.params.id;
+    console.log("Hello");
     Article.findByIdAndUpdate(id, req.body, {
         new: true
-    }, (err, updatedArticle) => {
+    }, (err, article) => {
         if (err)
             return next(err);
-        console.log(updatedArticle);
-        res.json({
-            "article": updatedArticle
+        res.render('showOneArticle', {
+            article
         });
     })
 })
 
-// Delete article 
+// Ask to Delete article 
 
-router.delete('/:id', (req, res, next) => {
+router.get('/:id/delete', (req, res, next) => {
     var id = req.params.id;
-    Article.findByIdAndDelete(id, (err, deletedArticle) => {
+    Article.findById(id, (err, article) => {
+        if (err)
+            return next(err)
+        res.render('delete', {
+            article
+        });
+    })
+})
+
+// Delete Article
+
+router.get('/delete/article/:id', (req, res, next) => {
+    var id = req.params.id;
+    Article.findByIdAndDelete(id, (err, article) => {
         if (err)
             return next(err);
-        res.send(`${deletedArticle.title} is deleted`)
+        console.log(id)
+        res.redirect('/articles');
     })
 })
 
