@@ -9,7 +9,6 @@ const article = require('../models/article');
 // Render article form
 
 router.get('/new', (req, res) => {
-    console.log("Add Article");
     res.render("addArticle");
 })
 
@@ -42,9 +41,17 @@ router.get('/:id', (req, res, next) => {
         if (err)
             return next(err)
         else {
-            res.render("showOneArticle", {
-                article
-            });
+            Comment.find({
+                articleId: id
+            }, (err, comments) => {
+                if (err)
+                    return next(err)
+                res.render("showOneArticle", {
+                    article,
+                    comments
+                });
+            })
+
         }
     })
 })
@@ -66,7 +73,6 @@ router.get('/:id/edit', (req, res, next) => {
 
 router.post('/:id', (req, res, next) => {
     var id = req.params.id;
-    console.log("Hello");
     Article.findByIdAndUpdate(id, req.body, {
         new: true
     }, (err, article) => {
@@ -98,20 +104,19 @@ router.get('/delete/article/:id', (req, res, next) => {
     Article.findByIdAndDelete(id, (err, article) => {
         if (err)
             return next(err);
-        console.log(id)
         res.redirect('/articles');
     })
 })
 
 // Comment Router
 
-router.post('/comments', (req, res, next) => {
-    Comment.create(req.body, (err, commentCreated) => {
+router.post('/:articleId/comments', (req, res, next) => {
+    var articleId = req.params.articleId;
+    req.body.articleId = articleId;
+    Comment.create(req.body, (err, comment) => {
         if (err)
             return next(err);
-        res.json({
-            "comment": commentCreated
-        });
+        res.redirect('/articles/' + articleId)
     })
 })
 

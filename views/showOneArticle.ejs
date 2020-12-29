@@ -25,7 +25,22 @@
     <a class="btn btn-success" href="/articles/<%=article.id%>/edit">Edit</a>
     &nbsp;&nbsp;&nbsp;
     <a class="btn btn-danger" href="/articles/<%=article.id%>/delete">Delete</a>
+    <br>
+    <br>
 
+    <form action="/articles/<%=article.id%>/comments" method="POST">
+        <input type="text" placeholder="comment" name="comment">
+        <input type="text" placeholder="Author" name="user">
+        <input type="submit" value="Comment">
+    </form>
+    <br>
+    <%comments.forEach(c=>{%>
+    <div>
+        <h5><%=c.comment%></h5>
+        <h6><b><%=c.user%></b></h6>
+    </div>
+    <br>
+    <%})%>
 
 </body>
 
