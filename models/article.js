@@ -15,7 +15,10 @@ var articleSchema = new Schema({
     author: mongoose.Schema.Types.ObjectId,
     tags: [String],
     likes: Number,
-    comment: mongoose.Schema.Types.ObjectId
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: "Comment"
+    }]
 }, {
     timestamps: true
 });

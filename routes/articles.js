@@ -78,9 +78,7 @@ router.post('/:id', (req, res, next) => {
     }, (err, article) => {
         if (err)
             return next(err);
-        res.render('showOneArticle', {
-            article
-        });
+        res.redirect('/articles/' + id);
     })
 })
 
@@ -116,7 +114,18 @@ router.post('/:articleId/comments', (req, res, next) => {
     Comment.create(req.body, (err, comment) => {
         if (err)
             return next(err);
-        res.redirect('/articles/' + articleId)
+        Article.findByIdAndUpdate(articleId, {
+            $push: {
+                comments: comment._id
+            }
+        }, {
+            new: true
+        }, (err, article) => {
+            if (err)
+                return next(err)
+            res.redirect('/articles/' + articleId)
+
+        });
     })
 })
 
